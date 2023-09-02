@@ -2,14 +2,16 @@ from .models import User
 from rest_framework import serializers
 
 class UserSerializer(serializers.ModelSerializer):
-    retype_password = serializers.CharField(required=True, min_length=8, max_length=16)
+    password = serializers.CharField(required=True, write_only=True, min_length=8, max_length=60)
+    retype_password = serializers.CharField(required=True,write_only=True)
 
     class Meta:
         model = User
-        fields = '__all__'
+        fields = fields = ['name', 'email', 'username','password', 'retype_password',  'account_type']
 
     def validate(self, attrs):
         if attrs.get('password') != attrs.get('retype_password') :
             raise serializers.ValidationError('Passwords did not match')
-        
+
+        attrs.pop('retype_password') 
         return attrs
