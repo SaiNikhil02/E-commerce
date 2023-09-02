@@ -5,9 +5,12 @@ from django.contrib.auth.models import AbstractUser
 # Create your models here
 
 class User(AbstractUser):
-    account_type = models.CharField(choices=userType.choices(), default=userType.CUSTOMER)
-    password = models.CharField(min_length=8, max_length=16, required=True)
-    REQUIRED_FIELDS = ['first_name', 'last_name', 'username', 'email', 'password', 'account_type']
+    name = models.CharField(blank=True, max_length=32)
+    email = models.EmailField(unique=True, db_index=True)
+    account_type = models.CharField(choices=userType.choices(), default=userType.CUSTOMER, max_length=12)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    REQUIRED_FIELDS = ['name', 'email', 'account_type']
 
     def _get_user_name(self) -> str:
         return '{0} {1}'.format(self.first_name, self.last_name)
