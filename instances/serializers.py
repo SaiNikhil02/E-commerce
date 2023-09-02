@@ -13,5 +13,4 @@ class UserSerializer(serializers.ModelSerializer):
         if attrs.get('password') != attrs.get('retype_password') :
             raise serializers.ValidationError('Passwords did not match')
 
-        attrs.pop('retype_password') 
         return attrs
